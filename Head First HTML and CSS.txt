@@ -126,6 +126,31 @@
         3）html5规范比以前健壮
     
 
+7 css入门
+    7.1 规则 = 场所（选择器） + 属性 + 样式
+    7.2 添加样式
+        1）<style></style>
+        2) <link type="text/css" rel="stylesheet" href="">
+
+    7.3 选择器
+        1) element {} 元素选择器
+        2) element.classname {} 类选择器 （element为类里的元素，可选）
+        3) element.id {} id选择器   （element为id里的元素，可选）
+        4) 为多个元素添加编写一个规则，只需要在选择器之间加上逗号， 如h1,h2 {}
+        5) 选择某个元素里的子元素，在元素之间加上空格
+        6) a:visited 伪元素选择器
+
+    7.4 样式继承（不是所有样式都可以继承）
+    7.5 覆盖继承
+            通过添加新的规则来覆盖继承
+
+    7.6 样式应用顺序
+        1）是否有选择器选择这个元素（如果选择器规则冲突，则使用最后列出的规则）
+        2）是否继承
+        3）使用默认值
+
+    7.7 css验证工具 http://jigsaw.w3.org/css-validator/
+
 
     
 html 元素
@@ -147,3 +172,40 @@ html 元素
     <ins>
         
 
+css 样式
+
+    背景
+        background-color
+        background-image
+            background-position
+            background-repeat
+
+    文本和字体
+        font-family
+        font-style:italic(设置斜体文本)
+        font-size: 15px|small
+        font-weight
+        color
+        text-decoration:underline|
+        line-height
+        letter-spacing 字母之间设置间距
+        list-style 设置列表项的外观
+        
+    对齐
+        text-align
+        vertical-align
+
+        
+    盒模型
+        padding
+        margin
+        border
+        border-bottom 控制元素下边框的外观
+
+    布局
+        display: talbe|tableRow|talbeCell;
+
+        
+    位置
+        left 指定元素左边位置
+        top  指定元素顶部位置
