@@ -151,6 +151,63 @@
 
     7.7 css验证工具 http://jigsaw.w3.org/css-validator/
 
+8 增加字体和颜色样式
+    8.1 字体系列
+        1）serif （有衬线）
+        2）sans-serif （没有衬线）
+        3）monospace （包含固定宽度的字符）
+        4）cursive （看似手写的字体）
+        5）fantasy （某种风格的装饰性字体）
+
+    8.2 web字体
+        1）字体格式
+            .ttf
+            .otf
+            .eot
+            .svg
+            .woff
+
+        2）存放
+            ①服务器
+            ②托管服务（FontSquirrel, google）
+
+        3）font-face属性 (内置的css规则)
+            @font-face {
+                font-family: "Emblema One";
+                src: url("");
+            }
+
+        4）web字体缺点
+            ①获取web字体需要花费一些时间
+            ②维护字体文件
+    
+    8.3 调整字体大小
+        1）像素px
+        2）百分比%
+        3）比例因子em
+        4）关键字(small, medium, large)
+
+        指定大小的秘诀：
+            ①以关键字指定body字体的大小
+            ②使用em或百分数，指定相对于body元素的其他元素
+
+    8.4 web颜色
+        1）构成：按颜色的红、绿、蓝三个分量所占数量来构成颜色
+        
+        2）指定颜色的方法
+            ① 指定颜色名(不区分大小写)：blue
+            ② 使用红蓝绿值指定颜色 rgb(80%,40%, 0%) or rgb(204, 102, 0); // 255*80%=204
+            ③ 使用十六进制 #cc6600
+
+        3）使用在线颜色表
+            wn.wikipedia.org/wiki/web_colors
+
+        4）颜色搭配秘诀
+            对于本文和背景，要使用对比度最大的颜色
+
+
+
+        
 
     
 html 元素
@@ -181,12 +238,12 @@ css 样式
             background-repeat
 
     文本和字体
-        font-family
-        font-style:italic(设置斜体文本)
-        font-size: 15px|small
-        font-weight
         color
-        text-decoration:underline|
+        font-family:Verdana, Geneva, Arial, sans-serif;(指定候选字体，最后再加上通用字体, 如sans-serif)
+        font-style:italic(斜体风格，衬线有弯曲)|oblique(倾斜文本)
+        font-size: 15px|small
+        font-weight:lighter|normal|bold|bolder
+        text-decoration:underline|overline|line-throuht|none (文本装饰；可以同时设置两个值，中间用空格隔开)
         line-height
         letter-spacing 字母之间设置间距
         list-style 设置列表项的外观
@@ -200,6 +257,7 @@ css 样式
         padding
         margin
         border
+        border-color
         border-bottom 控制元素下边框的外观
 
     布局
