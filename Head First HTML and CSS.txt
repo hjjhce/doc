@@ -139,6 +139,7 @@
         4) 为多个元素添加编写一个规则，只需要在选择器之间加上逗号， 如h1,h2 {}
         5) 选择某个元素里的子元素，在元素之间加上空格
         6) a:visited 伪元素选择器
+        7) 属性选择器，element[name="test"] {}
 
     7.4 样式继承（不是所有样式都可以继承）
     7.5 覆盖继承
@@ -206,11 +207,20 @@
             对于本文和背景，要使用对比度最大的颜色
 
 
+9 盒模型
 
-        
+    9.1盒模型
+        内容区（包含元素的内容）
+        内边距（可选，透明，但内容区的背景颜色会延伸到内边距，也没有装饰）
+        边框  （可以有自己的样式）
+        外边距（可选，透明没有颜色，也没有装饰）
+
+
 
     
 html 元素
+    <aside>
+    <button>
     <a>
     <q>
     <blockquote>
@@ -233,9 +243,9 @@ css 样式
 
     背景
         background-color
-        background-image
-            background-position
-            background-repeat
+        background-image:url(images/background.gif); //url两边不需要加引号
+            background-position:px|%|关键字（top,left,right,bottom,center）;设置图像位置，如top left表示图像放在元素的左上角
+            background-repeat:no-repeat|repeat-x|repeat-y|inherit; //设置平铺行为
 
     文本和字体
         color
@@ -244,7 +254,7 @@ css 样式
         font-size: 15px|small
         font-weight:lighter|normal|bold|bolder
         text-decoration:underline|overline|line-throuht|none (文本装饰；可以同时设置两个值，中间用空格隔开)
-        line-height
+        line-height:px|%|em;
         letter-spacing 字母之间设置间距
         list-style 设置列表项的外观
         
@@ -257,8 +267,12 @@ css 样式
         padding
         margin
         border
+        border-radius:px|em; 边框圆角
         border-color
+        border-width：5px|think|medium|thick;
+        border-style:solid|dotted(虚线)|dashed(破折线)|double(双线)|groove(槽线)|inset(内凹)|outset(外凸)|ridge(脊线)
         border-bottom 控制元素下边框的外观
+        border-bottom-style
 
     布局
         display: talbe|tableRow|talbeCell;
