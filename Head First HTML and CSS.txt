@@ -215,6 +215,29 @@
         边框  （可以有自己的样式）
         外边距（可选，透明没有颜色，也没有装饰）
 
+    9.2 class和id
+        class:多个元素使用某个样式
+        id: 一个元素使用某个样式
+
+    9.3 在css中使用id
+        element#id {
+
+        }
+
+        id前加上元素，为了不同页面给不同元素定义了相同的id
+
+    9.4 使用多个样式表
+        1）顺序很重要，一个样式表会覆盖它上面链接的样式表中的样式
+        2）要修改基础样式，应在基础样式表后面新增一个新的样式表，覆盖掉需要修改的样式
+
+    9.5 面向不同的设备
+        1) <link href="xxx.css" rel="stylesheet" media="screen and (max-device-width:480px)"> (如css文件相当庞大，建议使用link分割)
+        2) 在css中增加媒体查询
+            @media screen and (min-device-width: 481px) {
+
+            }
+            @media print {}
+
 
 
     
@@ -264,7 +287,7 @@ css 样式
 
         
     盒模型
-        padding
+        padding 上 右 下 左
         margin
         border
         border-radius:px|em; 边框圆角
