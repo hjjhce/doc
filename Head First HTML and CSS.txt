@@ -260,6 +260,9 @@ html 元素
     <br>
     <del>
     <ins>
+
+属性
+    placeholder 输入提示
         
 
 css 样式
@@ -288,7 +291,7 @@ css 样式
         
     盒模型
         padding 上 右 下 左
-        margin
+        margin:auto(自动居中)
         border
         border-radius:px|em; 边框圆角
         border-color
