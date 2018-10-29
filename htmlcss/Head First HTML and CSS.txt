@@ -239,6 +239,27 @@
             @media print {}
 
 
+10 div与span
+
+    10.1 逻辑区：页面上彼此相关的一组元素
+        如果添加div有助于将页面分解为逻辑区，从而保证结构清晰并便于指定样式，那么可以增加更多的div(便于维护和应用样式)
+
+    10.2 元素的宽度 = 内容区（属性width） + 左右内边距(padding) + 左右外边距(margin)
+        1) 块元素的默认宽度是auto, 它会延伸占满可用的空间
+        2) 指定宽度的方法
+            ①按像素指定 px
+            ②按百分比指定 % (计算元素所在容器的百分比，也就是父元素的百分比)
+
+    10.3 子孙选择器
+        父元素 子元素 {}
+
+    
+    10.4 简写
+        1）padding: 上 右 下 左;
+        2) margin: 上 右 下 左;
+        3) border: border-width border-style border-color;(任意顺序)
+        4) background: background-color background-image background-position;(任意顺序)
+        5) font: font-style(可选) font-variant(可选) font-weight(可选) font-size/line-height font-family
 
     
 html 元素
@@ -280,16 +301,17 @@ css 样式
         font-size: 15px|small
         font-weight:lighter|normal|bold|bolder
         text-decoration:underline|overline|line-throuht|none (文本装饰；可以同时设置两个值，中间用空格隔开)
-        line-height:px|%|em;
+        line-height:px|%|em|1(纯数字，表示是自己字体的倍数);
         letter-spacing 字母之间设置间距
         list-style 设置列表项的外观
         
     对齐
-        text-align
+        text-align:left|center|right; （会对块元素中的所有内联元素内容对齐，只能设置在块元素上，如果直接在内联元素上使用则不起作用）
         vertical-align
 
         
     盒模型
+        width:px|%;
         padding 上 右 下 左
         margin:auto(自动居中)
         border
@@ -301,7 +323,7 @@ css 样式
         border-bottom-style
 
     布局
-        display: talbe|tableRow|talbeCell;
+        display: talbe|tableRow|talbeCell|inline|block;
 
         
     位置

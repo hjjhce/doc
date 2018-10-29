@@ -1,0 +1,376 @@
+Vue
+
+只需关注逻辑层，DOM的操作由Vue来处理
+
+v-bind
+v-if
+v-for
+v-on （监听DOM事件）
+v-model
+v-html( 不转义，输出html)
+
+
+组件系统
+
+
+vue 实例
+    var vm = new Vue({
+        el:'#id',
+        data:{}
+    })
+
+    当创建实例时，data中存在的属性才是响应式的，后来再添加的属性不具有响应式
+
+    Object.freeze() 阻止现有属性的修改，响应系统无法再追踪变化
+
+
+    vm.$el
+    vm.$data
+    vm.$watch()
+
+    实例生命周期钩子 (可以让用户在不同阶段添加自己的代码)
+        created --> 实例被创建之后被执行
+        mounted
+        updated
+        destroyed
+
+        需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM
+
+    生命周期
+
+模板语法
+    插值
+        文本 （Mustache）{{}}
+            v-once 一次性插值
+
+        原始HTML
+            v-html
+
+        特性(也就是html元素属性)
+            mustache{{}}不能作用在HTML特性上，这种情况应该使用v-bind
+
+        使用javascript表达式， 如num+1, 但只支持单个表达式
+            （模板表达式都被放在沙盒中，只能访问全局变量的一个白名单，如 Math 和 Date 。你不应该在模板表达式中试图访问用户定义的全局变量）
+
+    指令
+        带有v-前缀的特殊特性
+        作用：当表达式的值改变时，将其产生连带影响，响应式地作用与DOM
+
+        参数：冒号后的字符串( 也就是html元素属性 )
+
+        修饰符：以.指明的特殊后缀，用以指出一个指令应该以特殊方式绑定
+
+        缩写
+            <a v-bind:href="url"> 缩写为 <a :href="url">
+            <a v-on:click="doSomething"> 缩写为 <a @click="doSomething">
+
+        
+计算属性和侦听器
+
+
+    计算属性（应对复杂逻辑）
+        var vm = new Vue({
+            el:'#id',
+            data: {
+                message: 'hello'
+            },
+            computed:{
+                reverseMessage: function(){
+                    return this.message.split('').reverse().join('') //这里匿名函数用作属性的getter函数， 通过vm.reverseMessage=xxx来实现赋值，所以不用setter
+                }
+            }
+        })
+
+
+    计算属性缓存VS方法
+        计算属性是基于依赖进行缓存的，只有相关依赖发生改变时，才重新计算（缓存）
+        方法则每次都重新执行（不需要缓存则使用方法）
+
+    计算属性和监听属性
+        监听属性：使用watch来观察和响应vue实例上的数据变动
+        监听watch被滥用，计算属性比监听属性更方便简洁
+
+    计算属性的setter
+        默认只有getter，需要时也可以创建setter
+        computed: {
+            fullname:{
+                get: function(){}
+                set: function(){}
+            }
+        }
+
+
+class 与 style绑定
+    绑定class
+        对象语法 <div v-bind:class={active:isActive}></div>
+        数组语法 <div v-bind:class=[{active:isActive}, errorClass]></div>
+        用在组件上，向组件根元素添加class
+
+    绑定内联样式
+        对象语法 <div v-bind:style={color:activeColor}></div> 
+            or <div v-bind:style=""styleObject>  
+            data：{
+                styleObject：{
+
+                }
+            }
+
+        数组语法 <div v-bind:style="[baseStyles, overridingStyles]"></div>
+
+
+条件渲染
+    v-if (在 <template> 元素上使用 v-if 条件渲染分组)
+    v-else-if
+    v-else
+
+    用 key 管理可复用的元素
+
+    v-if vs v-show
+        v-show 非常频繁的切换
+        v-if 运行条件很少改变
+
+    v-if与v-for一起使用：不推荐
+
+列表渲染
+
+    v-for
+        一个数组的v-for
+            v-for 块中，我们拥有对父作用域属性的完全访问权限。
+            v-for 还支持一个可选的第二个参数为当前项的索引
+
+        一个对象的v-for
+            第二个的参数为键名,第三个参数为索引
+
+        key 
+            <div v-for="item in items" v-bind:key="item.id">
+            建议尽可能在使用 v-for 时提供 key，除非遍历输出的 DOM 内容非常简单，或者是刻意依赖默认行为以获取性能上的提升
+
+    数组更新检测
+        变异方法（触发视图更新,也会改变被这些方法调用的原始数组）
+            push
+            pop
+            shift
+            unshift
+            splice
+            sort
+            reverse
+
+        替换数组（不会改变原始数组，但总是返回一个新数组）
+            example1.items = example1.items.filter(function (item) {
+                return item.message.match(/Foo/)
+            })
+
+        注意事项
+            Vue 不能检测以下变动的数组
+            1）当你利用索引直接设置一个项时
+            2）当你修改数组的长度时
+
+            解决：
+            1）
+                // Vue.set
+                Vue.set(vm.items, indexOfItem, newValue)
+                // Array.prototype.splice
+                vm.items.splice(indexOfItem, 1, newValue)
+
+            2） 
+                vm.items.splice(newLength)
+
+
+    对象更改检测注意事项
+        由于 JavaScript 的限制，Vue 不能检测对象属性的添加或删除
+
+        1）可以使用Vue.set(object, key, value) 方法向嵌套对象添加响应式属性
+        2）还可以使用 vm.$set 实例方法
+
+    显示过滤/排序结果
+        1）通过计算属性
+        2）如果计算属性不适用，可以用method方法
+
+    一段取值范围的 v-for
+        1）<span v-for="n in 10">{{ n }} </span>
+
+        2）v-for on a <template>
+        类似于 v-if，你也可以利用带有 v-for 的 <template> 渲染多个元素
+
+
+        3）v-for with v-if
+            当它们处于同一节点，v-for 的优先级比 v-if 更高，这意味着 v-if 将分别重复运行于每个 v-for 循环中
+
+
+
+事件处理
+    监听事件 v-on
+
+    事件处理方法
+        v-on 可以接收一个需要调用的方法名称 (绑定方法)
+        <button v-on:click="greet">Greet</button>
+
+
+    内联处理器中的方法
+        在内联javascript语句中调用方法
+          <button v-on:click="greet('hi')">Greet</button>
+
+    事件修饰符 （使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生）
+        .stop
+        .prevent
+        .capture
+        .self
+        .once
+        .passive
+        .once
+        .passive
+
+    按键修饰符
+        <input v-on:keyup.enter="submit">
+        按键别名
+            .enter
+            .tab
+            .delete (捕获“删除”和“退格”键)
+            .esc
+            .space
+            .up
+            .down
+            .left
+            .right
+
+    系统修饰符
+        .ctrl
+        .alt
+        .shift
+        .meta（对应 Windows 徽标键 (⊞)）
+
+        .exact 修饰符
+            允许你控制由精确的系统修饰符组合触发的事件
+            <!-- 即使 Alt 或 Shift 被一同按下时也会触发 -->
+            <button @click.ctrl="onClick">A</button>
+
+            <!-- 有且只有 Ctrl 被按下的时候才触发 -->
+            <button @click.ctrl.exact="onCtrlClick">A</button>
+
+
+        鼠标按钮修饰符
+            .left
+            .right
+            .middle
+
+
+表单输入绑定
+    基础用法
+        v-model 会忽略所有表单元素的 value、checked、selected 特性的初始值而总是将 Vue 实例的数据作为数据来源。你应该通过 JavaScript 在组件的 data 选项中声明初始值
+    
+        文本 <input v-model="message" type="text"
+        多行文本 <textarea v-model="message" 
+        复选框
+            单个复选框
+            多个复选框
+
+        单选按钮
+        选择框
+
+    值绑定
+        静态绑定：v-model
+        动态绑定：v-bind
+
+        复选框
+            <input
+                type="checkbox"
+                v-model="toggle"
+                true-value="yes"
+                false-value="no"
+            >
+        单选按钮
+            <input type="radio" v-model="pick" v-bind:value="a">
+
+        选择框的选项
+            <select v-model="selected">
+                <!-- 内联对象字面量 -->
+                <option v-bind:value="{ number: 123 }">123</option>
+            </select>
+
+
+    修饰符
+        .lazy  在默认情况下，v-model 在每次 input 事件触发后将输入框的值与数据进行同步 (除了上述输入法组合文字时)。你可以添加 lazy 修饰符，从而转变为使用 change 事件进行同步
+        .number 将用户的输入值转为数值类型
+        .trim 自动过滤用户输入的首尾空白字符
+
+    在组件上使用v-model
+
+
+组件基础
+    组件的复用
+        data必须是一个函数
+
+    组件的组织
+        全局注册 （Vue.component）
+        局部注册  var ComponentA = { /* ... */ }
+
+    通过prop向子组件传递数据
+        Prop 是你可以在组件上注册的一些自定义特性。当一个值传递给一个 prop 特性的时候，它就变成了那个组件实例的一个属性
+
+        使用 v-bind 来动态传递 prop
+    
+    单个根元素（每个组件必须只有一个根元素，可以在根元素里嵌套子元素）
+        <blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:title="post.title"
+            v-bind:content="post.content"
+            v-bind:publishedAt="post.publishedAt"
+            v-bind:comments="post.comments"
+        ></blog-post>
+        当多个prop时，重构如下
+        <blog-post
+            v-for="post in posts"
+            v-bind:key="post.id"
+            v-bind:post="post"
+        ></blog-post>
+   
+
+    通过事件向父级组件发送消息
+        v-on:click="$emit('enlarge-text')"
+        
+        使用事件抛出一个值 
+         <button v-on:click="$emit('enlarge-text', 0.1)">
+
+        在组件上使用v-model
+            Vue.component('custom-input', {
+            props: ['value'],
+            template: `
+                <input
+                v-bind:value="value"
+                v-on:input="$emit('input', $event.target.value)"
+                >
+            `
+            })
+            <custom-input v-model="searchText"></custom-input>
+
+    动态组件
+            <div id="dynamic-component-demo" class="demo">
+            <button
+                v-for="tab in tabs"
+                v-bind:key="tab"
+                v-bind:class="['tab-button', { active: currentTab === tab }]"
+                v-on:click="currentTab = tab"
+            >{{ tab }}</button>
+
+            <component
+                v-bind:is="currentTabComponent"  //使用component的is
+                class="tab"
+            ></component>
+            </div>
+
+    解析DOM模板时的注意事项
+        <table>
+            <blog-post-row></blog-post-row> //组件会被提升到外部
+        </table>
+
+        改为
+        <table>
+            <tr is="blog-post-row"></tr>
+        </table>
+
+
+    vm.$emit( eventName, […args] ) 触发当前实例上的事件。附加参数都会传给监听器回调。
+        
+            
+
