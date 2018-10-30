@@ -261,8 +261,35 @@
         4) background: background-color background-image background-position;(任意顺序)
         5) font: font-style(可选) font-variant(可选) font-weight(可选) font-size/line-height font-family
 
+    10.5 span
+        span建立内联元素的逻辑分区
+        内联元素只有左右边距，没有上下边距
+
+    10.6 伪类
+        a:link
+        a:visited
+        a:hover
+
+    10.7 层叠
+        给定一组样式表中的一组样式，浏览器就是以层叠方式来确定具体使用哪一个样式
+        1）收集所有样式表
+        2）找到所有匹配的声明
+        3）对所有匹配的规则排序
+        4）按特定性对所有声明排序
+        5）对冲突的规则，按照他们在各自样式表中出现的顺序进行排序
+
+    10.8 特定性（000）
+        1) 0 这个选择器包含id吗？每个id加一分
+        2) 0 这个选择器包含类或者伪类吗？每个类或伪类加一分
+        3) 0 这个选择器包含元素名吗？一个元素名包含一分
+
+        如： 
+            ol li p {}  //003
+            a:link {} //011
     
 html 元素
+    <span>
+    <div>
     <aside>
     <button>
     <a>
@@ -284,6 +311,21 @@ html 元素
 
 属性
     placeholder 输入提示
+
+
+选择器
+    1) 元素选择器
+    2) 子孙选择器
+    3) 类选择器
+    4) id选择器
+    5) 伪类选择器
+        :link
+        :visited
+        :hover
+        :active
+        :focus
+        :first-child
+        :last-child
         
 
 css 样式
@@ -301,7 +343,7 @@ css 样式
         font-size: 15px|small
         font-weight:lighter|normal|bold|bolder
         text-decoration:underline|overline|line-throuht|none (文本装饰；可以同时设置两个值，中间用空格隔开)
-        line-height:px|%|em|1(纯数字，表示是自己字体的倍数);
+        line-height:normal(允许浏览器选择适当的行高)|px|%|em|1(纯数字，表示是自己字体的倍数);
         letter-spacing 字母之间设置间距
         list-style 设置列表项的外观
         
