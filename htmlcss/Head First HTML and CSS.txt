@@ -336,6 +336,20 @@
 
         2）每个定位元素都有一个z-index属性，指定它在一个虚拟z轴上的位置
 
+        3) position属性
+            ① position的默认值是static(静态)。如果是静态定位，元素就会放在正常的文档流中，而不是由你来指定位置，要有浏览器来决定这些静态定位元素放在哪里。可以使用float属性将一个元素从流中取出，可以让这向左或向右浮动，但是最终还是由浏览器来确定它放在哪里。
+            ② 使用position的absolute来使用绝对定位时，将由你来告诉浏览器究竟应该放在什么位置
+
+    11.8 CSS表格
+        CSS表格允许你在一个有行和列的表格中显示块元素
+
+        1) 为整个表格创建一个div, 然后为每一行分别创建一个div， 对于每一列，只需要在行div中放置一个块元素
+
+        2) 指定样式
+            display:table;
+            display:table-row;
+            display:table-cell;
+
 html 元素
     <span>
     <div>
@@ -398,7 +412,7 @@ css 样式
         
     对齐
         text-align:left|center|right; （会对块元素中的所有内联元素内容对齐，只能设置在块元素上，如果直接在内联元素上使用则不起作用）
-        vertical-align
+        vertical-align:top|middle|bottom|text-top;(垂直对齐)
 
         
     盒模型
@@ -412,12 +426,13 @@ css 样式
         border-style:solid|dotted(虚线)|dashed(破折线)|double(双线)|groove(槽线)|inset(内凹)|outset(外凸)|ridge(脊线)
         border-bottom 控制元素下边框的外观
         border-bottom-style
+        border-spacing:px|%|em;(表格边框间距)
 
     布局
+        position:static(静态定位,默认值，有浏览器决定位置)|absolute(绝对定位，由你来决定位置)|fixed(固定定位，相对于浏览器窗口，而不是相对页面，永远不会移动)|relative(相对定位);
         display: talbe|tableRow|talbeCell|inline|block;
         float:left|right;
-        clear:left|right|both; (当元素流入页面时，这个元素不允许有浮动内容)
-
+        clear:left|right|both; (当元素流入页面时，这个元素不允许有浮动内容)        
         
     位置
         left 指定元素左边位置

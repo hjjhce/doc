@@ -2,11 +2,12 @@ Vue
 
 只需关注逻辑层，DOM的操作由Vue来处理
 
-v-bind
-v-if
-v-for
+v-bind （响应式更新HTML属性）
+v-if (是否渲染元素)
+v-show (始终渲染元素并保留在DOM中，v-show只是简单地切换css属性display)
+v-for 
 v-on （监听DOM事件）
-v-model
+v-model (为表单元素创建双向绑定)
 v-html( 不转义，输出html)
 
 
@@ -23,10 +24,10 @@ vue 实例
 
     Object.freeze() 阻止现有属性的修改，响应系统无法再追踪变化
 
-
-    vm.$el
-    vm.$data
-    vm.$watch()
+    vue实例的属性和方法，有前缀 $（区别于用户自定义的属性）
+        vm.$el
+        vm.$data
+        vm.$watch()
 
     实例生命周期钩子 (可以让用户在不同阶段添加自己的代码)
         created --> 实例被创建之后被执行
@@ -56,9 +57,11 @@ vue 实例
         带有v-前缀的特殊特性
         作用：当表达式的值改变时，将其产生连带影响，响应式地作用与DOM
 
-        参数：冒号后的字符串( 也就是html元素属性 )
+        参数：冒号后的字符串( 也就是html元素属性或事件 )
 
         修饰符：以.指明的特殊后缀，用以指出一个指令应该以特殊方式绑定
+            .prevent 阻止默认事件的发生
+            .stop 阻止冒泡的发生
 
         缩写
             <a v-bind:href="url"> 缩写为 <a :href="url">
@@ -88,7 +91,7 @@ vue 实例
 
     计算属性和监听属性
         监听属性：使用watch来观察和响应vue实例上的数据变动
-        监听watch被滥用，计算属性比监听属性更方便简洁
+        监听watch被滥用，计算属性比监听属性更方便简洁，那监听属性有什么用？（看侦听器）
 
     计算属性的setter
         默认只有getter，需要时也可以创建setter
@@ -99,12 +102,41 @@ vue 实例
             }
         }
 
+    侦听器
+        合适用于异步请求和开销比较大的操作
+        watch:{            
+        }
 
 class 与 style绑定
     绑定class
-        对象语法 <div v-bind:class={active:isActive}></div>
-        数组语法 <div v-bind:class=[{active:isActive}, errorClass]></div>
+        对象语法 
+            <div v-bind:class={active:isActive, 'text-danger':hasError}></div> //active这个class是否存在取决于isActive的值
+            
+            1)v-bind:class可以与普通的class属性共存
+                <div class="static" v-bind:class="{active:isActive}">
+        
+            2)绑定的数据对象不必内联定义在模板里
+                <div class="classObject"></div>
+                data: {
+                    classObject: {
+                        active: true,
+                        'text-danger': false
+                    }
+                }
+            
+            3)也可以绑定一个返回对象的计算属性（计算属性依赖元素对象其它需要缓存的值）
+
+
+        数组语法 
+            <div v-bind:class="[activeClass, errorClass]"></div>
+            <div v-bind:class=[{active:isActive}, errorClass]></div>
+        
         用在组件上，向组件根元素添加class
+            Vue.component('my-component', {
+                template: '<p class="foor bar">',
+            })
+
+            <my-component class="other-class">
 
     绑定内联样式
         对象语法 <div v-bind:style={color:activeColor}></div> 
@@ -124,6 +156,8 @@ class 与 style绑定
     v-else
 
     用 key 管理可复用的元素
+        v-if 渲染时可复用元素
+        而给元素添加key标识元素独立，不可复用
 
     v-if vs v-show
         v-show 非常频繁的切换
@@ -141,7 +175,7 @@ class 与 style绑定
         一个对象的v-for
             第二个的参数为键名,第三个参数为索引
 
-        key 
+        key (识别，重新排序)
             <div v-for="item in items" v-bind:key="item.id">
             建议尽可能在使用 v-for 时提供 key，除非遍历输出的 DOM 内容非常简单，或者是刻意依赖默认行为以获取性能上的提升
 
@@ -179,11 +213,12 @@ class 与 style绑定
     对象更改检测注意事项
         由于 JavaScript 的限制，Vue 不能检测对象属性的添加或删除
 
-        1）可以使用Vue.set(object, key, value) 方法向嵌套对象添加响应式属性
-        2）还可以使用 vm.$set 实例方法
+        1）对于已经创建的实例，Vue 不能动态添加根级别的响应式属性（直接给data添加属性）
+        2）可以使用Vue.set(object, key, value) 方法向嵌套对象添加响应式属性
+        3）还可以使用 vm.$set 实例方法
 
-    显示过滤/排序结果
-        1）通过计算属性
+    显示过滤/排序结果，而不实际改变原始数据
+        1）通过计算属性返回过滤或排序数组
         2）如果计算属性不适用，可以用method方法
 
     一段取值范围的 v-for
@@ -196,29 +231,39 @@ class 与 style绑定
         3）v-for with v-if
             当它们处于同一节点，v-for 的优先级比 v-if 更高，这意味着 v-if 将分别重复运行于每个 v-for 循环中
 
+        4）在组件中使用v-for
+            任何数据都不会被自动传递到组件里，因为组件有自己独立的作用域。为了把迭代数据传递到组件里，我们要用 props
+
 
 
 事件处理
     监听事件 v-on
+        <button v-on:click="counter += 1">Add 1</button>
 
-    事件处理方法
+    事件处理方法(默认传入event对象)
         v-on 可以接收一个需要调用的方法名称 (绑定方法)
         <button v-on:click="greet">Greet</button>
 
 
     内联处理器中的方法
-        在内联javascript语句中调用方法
+        1)在内联javascript语句中调用方法
           <button v-on:click="greet('hi')">Greet</button>
 
+        2)有时也需要在内联语句处理器中访问原始的 DOM 事件。可以用特殊变量 $event 把它传入方法
+            <button v-on:click="warn('Form cannot be submitted yet.', $event)">Submit</button>
+
     事件修饰符 （使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生）
-        .stop
-        .prevent
+        .stop     event.stopPropagation()
+        .prevent （event.preventDefault(), 提交事件不再重载页面）
         .capture
-        .self
+        .self (只当在 event.target 是当前元素自身时触发处理函数)
+            v-on:click.prevent.self 会阻止所有的点击，而 
+            v-on:click.self.prevent 只会阻止对元素自身的点击。
         .once
         .passive
         .once
         .passive
+        .remove
 
     按键修饰符
         <input v-on:keyup.enter="submit">
