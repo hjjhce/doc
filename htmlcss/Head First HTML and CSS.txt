@@ -296,7 +296,7 @@
     11.2 使用流
         流实际上就是浏览器在页面上摆放HTML元素所用的方法，从HTML文件最上面的元素开始，从上到下沿着元素流逐个显示所遇到的各个元素
         1）遇到块元素则会换行
-        2）遇到内联元素则在水平方向上显示，总体上会从左上方流向右下方
+        2）遇到内联元素则在水平方向上显示，总体上会从左上方流向右下方, 并在垂直方向上扩展外围块元素来包含这些内联元素
 
     11.3 流和盒模型的外边距
         1）并排放置两个内联元素时，浏览器会在元素间创建足够的空间，考虑它们的外边距（除了图像，一般不设置内联元素的外边距）
@@ -312,6 +312,8 @@
             ④设置float属性值
 
         3）浮动元素，该元素会从正常流中删除，所以其它的块元素会填充该元素原来的位置，但对内联元素定位时，它们会考虑浮动元素的边界，因此会围绕着浮动元素
+
+        4）clear属性，用来指定一个块元素左边或者右边不能有浮动元素。设置了clear属性的块元素会下移，直到它旁边没有块元素
 
     11.5 两栏问题
         1) 右(左)浮动边栏
@@ -364,9 +366,94 @@
 
     11.11 4种定位
         静态定位：元素正常流入页面
-        绝对定位：允许将允许从正常流中取出，相对于最近的父元素指定一个绝对位置
+        绝对定位：从正常流中取出该元素，相对于最近的父元素指定一个绝对位置
         固定定位：相对于浏览器窗口，把元素放在一个固定位置，不会移动
         相对定位：相对于其外围包含的元素来定位，元素仍在正常的页面流中
+
+12 HTML5标记
+    <header> //可以是任何部分的首部，而不只是页面首部，如大多数的section和article都会有一个header
+    <footer> //类似header
+    <nav>
+    <section> //把相关内容组织在一起，如果把不相关的内容组织在一起用div
+    <article> //独立的部分
+    <aside>
+    <time datetime=""> //如果元素内容没有采用官方日期/事件格式来写，就必须有datetime属性
+    <video>
+
+    12.1 video元素
+        controls //视频控件是否出现
+        autoplay //是否自动播放
+        poster   //海报图像，视频未播放时显示的图像
+        loop     //重新自动播放
+        preload  //如何加载数据
+        src
+        width,height
+
+    12.2 视频格式
+        WebM容器
+            Vp8视频编码
+            Vorbis音频编码
+        MP4容器
+            H.264视频编码
+            AAC音频编码
+        Ogg容器
+            Theora视频编码
+            Vorbis音频编码
+
+    12.3 source元素
+        <source src="video/tweetsip.ogv" type='video/ogg; codecs="theora, vorbis""> 
+        src: 容器
+        type: 向浏览器提示文件类型
+        codecs：指定使用哪个编码器
+
+13 表格与更多表列
+    <table>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    13.1 表格单元格间距   
+        表格单元格没有外边距，它们只是在边框周围有间距，这个间距是为整个表格设置的。不能单独地控制各个表格单元格的边框间距
+
+        border-space
+        border-collapse //折叠边框
+
+    13.2 跨行与跨列
+        rowspan属性跨行
+        colspan属性跨列
+
+    13.3 <th>作为表头
+    13.4 列表样式    
+
+14 表单控件
+
+    14.1 基本表单输入
+        文本输入    <input type="text">
+        单选按钮输入<input type="radio">
+        复选框输入  <input type="checkbox">
+        文本区      <textarea></textarea>
+        下拉菜单    <select><option></option></select>
+        提交输入    <submit>
+    
+    14.2 其它表单输入
+        数字输入    <input type="number" min="0" max="100">
+        范围输入    <input type="range"  min="0" max="20"  step="5"> //滑动条
+        颜色输入    <input type="color">
+        日期输入    <input type="date">
+        email输入   <input type="email"> //移动设备才有效果
+        tel输入     <input type="tel">   //移动设备才有效果
+        url输入     <input type="url">   //移动设备才有效果
+        
+
+
 
 html 元素
     <span>
@@ -389,6 +476,25 @@ html 元素
     <br>
     <del>
     <ins>
+    <mark>
+    <audio> //声音文件
+    <progress>
+    <meter> //某个范围的度量，如温度
+    <vanvas> //在页面中显示用javascript绘制的图像和动画
+    <figure> //定义图片，图表或代码清单
+    <header>
+    <footer>
+    <nav>
+    <section>
+    <article>
+    <aside>
+    <time>
+    <video>
+    <caption> //提供表格额外信息，如定义表格标题
+    <table>
+        <tr>
+        <th>
+        <td>
 
 属性
     placeholder 输入提示
@@ -407,6 +513,8 @@ html 元素
         :focus
         :first-child
         :last-child
+        :selected (li.selected)
+        :nth-child(even)|:nth-child(odd)|:nth-child(2n) //兄弟元素，为表格隔行添加样式
         
 
 css 样式
@@ -444,14 +552,25 @@ css 样式
         border-style:solid|dotted(虚线)|dashed(破折线)|double(双线)|groove(槽线)|inset(内凹)|outset(外凸)|ridge(脊线)
         border-bottom 控制元素下边框的外观
         border-bottom-style
-        border-spacing:px|%|em;(表格边框间距)
 
     布局
         position:static(静态定位,默认值，有浏览器决定位置)|absolute(绝对定位，由你来决定位置)|fixed(固定定位，相对于浏览器窗口，而不是相对页面，永远不会移动)|relative(相对定位);
-        display: talbe|tableRow|talbeCell|inline|block;
+        display: talbe|tableRow|talbeCell|inline（内联显示）|block;
         float:left|right;
-        clear:left|right|both; (当元素流入页面时，这个元素不允许有浮动内容)        
-        
-    位置
+        clear:left|right|both; (当元素流入页面时，这个元素不允许有浮动内容) 
+
         left 指定元素左边位置
         top  指定元素顶部位置
+        right
+        bottom
+
+    列表
+        border-spacing:px|%|em;(表格边框间距)
+        border-collapse:collapse //表格折叠边框
+        list-style-type:none;(删除列表项的项目符号)|disc(默认)|circle(圆形标记)|square(方块标记)|decimal|upper-alpha|lower-alpha|upper-roman(大写罗马数字)|lower-roman
+        list-style-image:url(xxx.gif) //定制列表标记
+        list-style-position:inside(标记在列表项里)|outside（标记在列表项外面）
+        
+
+    其它
+        caption-side:bottom; //把标题移到表格下面
