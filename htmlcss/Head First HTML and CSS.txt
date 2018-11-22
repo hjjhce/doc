@@ -442,6 +442,8 @@
         文本区      <textarea></textarea>
         下拉菜单    <select><option></option></select>
         提交输入    <submit>
+        密码输入    <input type="password">
+        文件输入    <input type="file">
     
     14.2 其它表单输入
         数字输入    <input type="number" min="0" max="100">
@@ -453,7 +455,19 @@
         url输入     <input type="url">   //移动设备才有效果
         
 
+    14.3 GET 和 POST
+    14.4 <label>
+    14.5 表单中还有哪些元素
+        
+        <fieldset>  组织表单元素
+        <legend>为这组input元素添加一个标签
+        <input type="password">
+        <input type="file">
+        <select multiple> //多选菜单
+        placeholder //提示输入内容
+        required
 
+    
 
 html 元素
     <span>
@@ -495,6 +509,8 @@ html 元素
         <tr>
         <th>
         <td>
+    <fieldset>
+    <legend>
 
 属性
     placeholder 输入提示
@@ -503,6 +519,8 @@ html 元素
 选择器
     1) 元素选择器
     2) 子孙选择器
+        div p {} div里的所有p元素
+        div>p {} 父元素为div的所有p元素
     3) 类选择器
     4) id选择器
     5) 伪类选择器
@@ -515,6 +533,17 @@ html 元素
         :last-child
         :selected (li.selected)
         :nth-child(even)|:nth-child(odd)|:nth-child(2n) //兄弟元素，为表格隔行添加样式
+        :first-letter
+        :first-line
+    6) 属性选择器 （根据元素属性来选择元素）
+            img[width]
+            img[height="300"]
+            image[alt~="flowers"]
+
+    7) 兄弟选择器
+        h1+p {}
+
+    
         
 
 css 样式
