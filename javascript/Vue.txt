@@ -25,8 +25,8 @@ vue 实例
     Object.freeze() 阻止现有属性的修改，响应系统无法再追踪变化
 
     vue实例的属性和方法，有前缀 $（区别于用户自定义的属性）
-        vm.$el
-        vm.$data
+        vm.$data === data // => true
+        vm.$el === document.getElementById('example')
         vm.$watch()
 
     实例生命周期钩子 (可以让用户在不同阶段添加自己的代码)
@@ -159,7 +159,7 @@ class 与 style绑定
         v-if 渲染时可复用元素
         而给元素添加key标识元素独立，不可复用
 
-    v-if vs v-show
+    v-if vs v-show （v-show 不支持 <template> 元素，也不支持 v-else）
         v-show 非常频繁的切换
         v-if 运行条件很少改变
 
@@ -216,6 +216,7 @@ class 与 style绑定
         1）对于已经创建的实例，Vue 不能动态添加根级别的响应式属性（直接给data添加属性）
         2）可以使用Vue.set(object, key, value) 方法向嵌套对象添加响应式属性
         3）还可以使用 vm.$set 实例方法
+        4）为对象赋予多个属性，使用Object.assign()
 
     显示过滤/排序结果，而不实际改变原始数据
         1）通过计算属性返回过滤或排序数组
@@ -252,11 +253,11 @@ class 与 style绑定
         2)有时也需要在内联语句处理器中访问原始的 DOM 事件。可以用特殊变量 $event 把它传入方法
             <button v-on:click="warn('Form cannot be submitted yet.', $event)">Submit</button>
 
-    事件修饰符 （使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生）
+    事件修饰符 （修饰符可以串联，顺序很重要；相应的代码会以同样的顺序产生）
         .stop     event.stopPropagation()
-        .prevent （event.preventDefault(), 提交事件不再重载页面）
+        .prevent （event.preventDefault(), 不会触发默认事件，如提交事件不再重载页面）
         .capture
-        .self (只当在 event.target 是当前元素自身时触发处理函数)
+        .self (只当在 event.target 是当前元素自身时触发处理函数, 而不是内部元素触发)
             v-on:click.prevent.self 会阻止所有的点击，而 
             v-on:click.self.prevent 只会阻止对元素自身的点击。
         .once
@@ -372,10 +373,17 @@ class 与 style绑定
    
 
     通过事件向父级组件发送消息
-        v-on:click="$emit('enlarge-text')"
+
+        1）使用$emit向父组件触发一个事件 
+            v-on:click="$emit('enlarge-text')"
+            父组件监听这个事件
+            v-on:enlarge-text="postFontSize += 0.1"
         
-        使用事件抛出一个值 
-         <button v-on:click="$emit('enlarge-text', 0.1)">
+        2）用事件抛出一个特定的值
+            <button v-on:click="$emit('enlarge-text', 0.1)">
+            ①通过 $event 访问到被抛出的这个值
+            ②作为函数第一个参数传入这个方法
+        
 
         在组件上使用v-model
             Vue.component('custom-input', {
@@ -419,3 +427,25 @@ class 与 style绑定
         
             
 
+深入了解组件
+    组件注册
+        全局注册
+        局部注册
+
+    Prop
+        大小写 -- 特性名大小写不敏感，使用
+        prop类型
+        传递静态或动态prop
+            数字
+            布尔值
+            数组
+            对象
+            对象的所有属性
+        单向数据流
+            1.这个 prop 用来传递一个初始值；这个子组件接下来希望将其作为一个本地的 prop 数据来使用
+            2.这个 prop 以一种原始的值传入且需要进行转换，使用计算属性
+
+        prop验证
+            类型检查
+
+        
