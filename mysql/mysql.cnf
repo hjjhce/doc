@@ -1,0 +1,36 @@
+#GENERAL
+datadir  = /var/lib/mysql
+socket   = /var/run/mysqld/mysqld.sock
+pid_file = /var/run/mysqld/mysqld.pid
+port = 3306
+default_storage_engine = default_storage_engine
+
+#INNODB
+innodb_buffer_pool_size = 268435456
+innodb_log_file_size = 50331648
+innodb_log_buffer_size = 16777216
+innodb_flush_log_at_trx_commit = 1
+innodb_file_per_table = 1
+innodb_flush_method = 0_DIRECT
+
+#LOGGING
+log_error = /var/lib/mysql/mysql-error.log
+slow_query_log = 1
+slow_query_log_file = /var/lib/mysql/mysql-slow.log
+
+#OTHER
+tmp_table_size = 16777216
+max_heap_table_size = 16777216
+query_cache_type = 0
+query_cache_size = 0
+max_connections = 151
+thread_cache_size = 12
+table_open_cache = 2000
+open_files_limit = 1048576
+#expire_logs_days
+#max_allowed_packet
+#max_connect_errors
+#skip_name_resolve
+#sql_mode
+#read_only
+#slave_net_timeout
