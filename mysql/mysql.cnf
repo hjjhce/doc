@@ -3,7 +3,7 @@ datadir  = /var/lib/mysql
 socket   = /var/run/mysqld/mysqld.sock
 pid_file = /var/run/mysqld/mysqld.pid
 port = 3306
-default_storage_engine = default_storage_engine
+default_storage_engine = InnoDB
 
 #INNODB
 innodb_buffer_pool_size = 268435456
