@@ -1,0 +1,82 @@
+
+1 - Clone Laradock inside your PHP project:
+
+git clone https://github.com/Laradock/laradock.git
+2 - Enter the laradock folder and rename env-example to .env.
+
+cp env-example .env
+3 - Run your containers:
+
+docker-compose up -d nginx mysql phpmyadmin redis workspace 
+4 - Open your project’s .env file and set the following:
+
+DB_HOST=mysql
+REDIS_HOST=redis
+QUEUE_HOST=beanstalkd
+5 - Open your browser and visit localhost: http://localhost.
+
+
+6 目录共享
+  nginx 
+  	root /var/www/public里的/var/www相当于本地host下laradock的上一级目录（docker inspect [nginx container id]）
+
+
+7. docker run -it <workspace id> bash && composer create-project XXX
+
+8.laradock_mysql 切换到5.7版本
+	修改两个地方
+	1）.env
+	2）/mysql/dockerfile
+	然后docker-compose build mysql
+
+	docker run -it --rm mysql:tag --verbose --help
+
+	如果在cmder环境下mysql启动不了，尝试在cmd工具下运行，
+
+
+	docker inspect <container id> //查看容器, phpmyadmin的服务器地址从这里看，别名是mysql
+
+
+
+9. phpmyadmin
+	服务器 mysql
+	用户 default
+	密码 secret
+
+10. workspace Image Tools PHP CLI - Composer - Git - Linuxbrew - Node - V8JS - Gulp - SQLite - xDebug - Envoy - Deployer - Vim - Yarn - SOAP - Drush…
+
+
+
+docker-compose logs {container name} // 查看docker日志记录
+
+
+
+
+nginx default.conf 里的/var/www 就是windows下面/laradock的上级目录
+
+
+.env
+APP_CODE_PATH_HOST=../webroot # /var/www链接为/webroot
+
+
+------------------------
+.env
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=root
+DB_USERNAME=
+
+
+#在cmd运行如下命令
+执行 composer 
+
+执行 composer 等操作，需要进入到 workspace 容器中进行，使用命令：
+
+?
+1
+docker-compose exec workspace bash
+进入到 workspace 容器，就可以进行 compose 命令等操作了。
+
+
+phpmyadmin localhost:8080
