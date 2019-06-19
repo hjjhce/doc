@@ -1,0 +1,32 @@
+1. 更新阿里源
+    cp /etc/apt/sources.list /etc/apt/sources.list-backup
+
+    ubuntu 18.04(bionic) 配置如下
+    deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+
+    deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+
+    deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+
+    deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+
+    deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+
+2. apt-get install 
+        net-tools    //ifconfig 命令
+        iputils-ping //ping 命令
+        vim 
+        curl
+        nginx
+
+
+        php
+            php7.2 php7.2-cli php7.2-common php7.2-curl php7.2-gd php7.2-json php7.2-mysql php7.2-opcache php7.2-xml php7.2-fpm php7.2-mbstring php-redis
+
+            service --status-all
+            service php7.2-fpm start
