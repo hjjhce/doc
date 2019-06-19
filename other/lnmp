@@ -1,0 +1,270 @@
+lnmp环境配置
+
+一 更新源：
+	yum install wget
+
+	vim /etc/resolv.conf //添加DNS地址
+
+	mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+	wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+
+	####
+	yum install epel-release // 另一个第三方源，里面提供丰富且最新的额软件包，如centos7没有nginx,但epel有
+	rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+
+	yum clean all
+	yum makecache 生成缓存
+	yum update
+
+	### 删除源
+	/etc/yum.repos.d/
+
+二 nginx
+	yum list | grep nginx
+	yum -y install nginx
+	systemctl start nginx
+	systemctl enable nginx
+
+三 php
+	yum install php72-php php72-php-fpm.x86_64 php72-php-gd.x86_64 php72-php-mbstring.x86_64 php72-php-mysqlnd.x86_64 php72-php-opcache.x86_64 php72-php-pdo.x86_64 php72-php-phpiredis.x86_64 php72-php-soap.x86_64 php72-php-xml.x86_64
+
+
+
+	删除PHP
+		yum remove php
+		yum remove php*
+		yum remove php-*
+		yum remove php7
+		yum remove php70
+		yum remove php7.0
+		yum remove php-common
+
+
+
+
+
+
+
+
+
+
+
+
+#https://www.awaimai.com/671.html
+
+进入/etc/resolv.conf。
+修改内容为下
+nameserver 8.8.8.8 #google域名服务器
+
+---------------------------------------
+在CentOS 7下更改yum源与更新系统。
+
+[1] 首先备份/etc/yum.repos.d/CentOS-Base.repo
+
+cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+[2] 进入yum源配置文件所在文件夹
+
+[root@localhost yum.repos.d]# cd /etc/yum.repos.d/
+[3] 下载163的yum源配置文件，放入/etc/yum.repos.d/(操作前请做好相应备份)
+
+[root@localhost yum.repos.d]# wget http://mirrors.163.com/.help/CentOS6-Base-163.repo
+[4] 运行yum makecache生成缓存
+
+[root@localhost yum.repos.d]# yum makecache
+[5] 更新系统(时间比较久,主要看个人网速)
+
+[root@localhost yum.repos.d]# yum -y update
+
+
+1. httpd
+2. mysql
+	yum install mysql //mariadb
+3. php
+	源
+	# yum install epel-release
+	# rpm -ivh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+
+	使用yum list命令查看可安装的包(Packege)。
+	# yum list --enablerepo=remi --enablerepo=remi-php56 | grep php
+
+	yum install --enablerepo=remi --enablerepo=remi-php56 php php-mysqlnd php-pear php-fpm php-opcache php-devel php-mbstring php-mcrypt php-phpunit-PHPUnit php-pecl-xdebug php-pecl-xhprof
+
+  php-fpm
+  	systemctl start php-fpm
+  	sudo vim /etc/php-fpm.d/www.conf
+  		listen.owner = nginx
+		listen.group = nginx
+		listen.mode = 0666
+    sudo systemctl restart php-fpm
+	sudo systemctl enable php-fpm
+
+4. nginx
+	yum list | grep nginx 
+	sudo yum install nginx
+    vim nginx.conf
+    	fastcgi_pass 127.0.0.1:9000
+
+
+5.host 
+	192.168.33.15 web.test.com
+
+
+
+
+composer安装
+
+--------------------------------
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+--------------------------------
+ln -s composer.phar /usr/local/bin/composer //移植到全局
+composer -v 
+
+
+
+composer global require "laravel/installer"
+sudo ln -s /home/vagrant/.config/composer/vendor/bin/laravel /usr/local/bin/laravel
+laravel -v
+composer create-project --prefer-dist laravel/laravel blog 5.4
+
+
+
+
+
+
+
+
+mysql -u root -p Zz654321
+
+
+
+
+
+
+LNMP7
+--------------------------------
+
+mysql5.7
+
+	rpm -Uvh http://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
+	yum repolist all | grep mysql
+	yum repolist enabled | grep mysql
+	yum -y install mysql-community-server
+
+	开机启动设置
+	#systemctl enable mysqld
+	#systemctl daemon-reload
+
+	#grep 'temporary password' /var/log/mysqld.log
+	#mysql -uroot -p
+	mysql>ALTER USER 'root'@'localhost' IDENTIFIED BY 'new psd';
+	show variables like '%password%';
+
+	在/etc/my.cnf文件添加validate_password_policy配置：
+	# 选择0（LOW），1（MEDIUM），2（STRONG）其中一种，选择2需要提供密码字典文件
+		validate_password_policy=0
+
+		character_set_server=utf8
+		init_connect='SET NAMES utf8'
+
+	#systemctl restart mysqld
+
+	mysql> GRANT ALL PRIVILEGES ON *.* TO 'lmc'@'%' IDENTIFIED BY '1qazXsw@' WITH GRANT OPTION;
+	mysql> FLUSH PRIVILEGES;
+
+
+nginx
+	yum install nginx
+	sudo systemctl start nginx
+	sudo nginx -t
+	curl 127.0.0.1
+
+
+	sudo vim /etc/nginx/conf.d/vhost.conf
+
+	server {
+       # listen       80 default_server;
+       # listen       [::]:80 default_server;
+        server_name  web.spacex.com;
+        root         /vagrant/web/spacex;
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+
+
+        index index.php index.html index.htm;
+
+        location / {
+            #支持 URL 美化,隐藏 URL 中的index.php
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        # PHP脚本转发至PHP-FPM解析
+        location ~ \.php$ {
+            try_files $uri =404;
+            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_index index.php;
+            include fastcgi_params;
+        }
+
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        	location = /50x.html {
+        }
+	}
+
+
+
+安装PHP7.2
+
+ PHP 5.3.0以上推荐使用mysqlnd驱动，而不是msyql
+------
+yum install php72w.x86_64 php72w-mysqlnd.x86_64 php72w-cli.x86_64 php72w-common.x86_64 php72w-gd.x86_64 php72w-ldap.x86_64 php72w-mbstring.x86_64 php72w-mcrypt.x86_64 php72w-pdo.x86_64 php72w-xml.x86_64
+
+安装php-fpm
+
+yum install php72w-fpm.x86_64 php72w-opcache.x86_64
+
+#systemctl enable php-fpm
+
+sudo vim /etc/php-fpm.d/www.conf
+ ;listen.owner = nobody
+ ;listen.group = nobody
+ ;listen.mode = 0660
+ 改为
+ listen.owner = nginx
+ listen.group = nginx
+ listen.mode = 0660
+
+
+composer 
+	php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+	php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+	php composer-setup.php
+	php -r "unlink('composer-setup.php');"
+
+    ln -s /vagrant/composer.phar /usr/local/bin/composer
+
+
+lavarel 
+
+	composer global require "laravel/installer"
+
+
+安装sublime以及插件
+	html5
+	Emmet
+	phpfmt 
+		{
+		"version": 4,
+		"php_bin":"E:\\PHP\\Software\\php-7.2.6-Win\\php.exe",
+		"format_on_save":true,
+		"option": "value"
+		}
+	DocBlockr
