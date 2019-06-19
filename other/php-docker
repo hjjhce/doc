@@ -1,0 +1,17 @@
+启动mysql
+	docker run --name mysql-my -v e:\coding\database\mysql-my:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=Zz123456 -d mysql:5.7
+
+启动phpmyadmin
+	docker run --name phpmyadmin-my -d --link mysql-my:db -p 8080:80 phpmyadmin/phpmyadmin
+
+启动nginx和php-fpm
+	docker run --name nginx-php-fpm-my --link mysql-my:db -d -v e:\coding\php\wwwroot:/var/www/ -p 80:80 richarvey/nginx-php-fpm
+
+	supervisorctl restart nginx
+	apk add wim
+
+
+nginx conf 
+	/laradock/nginx/sites
+data path
+	env:DATA_PATH_HOST
