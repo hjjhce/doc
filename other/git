@@ -1,0 +1,5 @@
+查看配置信息 git config --list
+
+配置用户信息
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
