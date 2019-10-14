@@ -1,0 +1,84 @@
+ICE：面向对象的中间件平台
+    专注业务逻辑
+    而不需要关注底层通信，如打开网络连接，序列化和反序列化，以及失败重连等（ICE处理）
+
+    client and server
+    ice object : entity respond to client requests
+        type
+        identity
+        addressing information
+    proxy: represent the ice object for the client, acts as the local ambassador for an ice object (封装处理client的请求，发送给ice object, 等待响应)
+    stringified proxies: the information in a proxy can be expressed as a string, SimplePrinter:default -p 10000
+    Direct Proxies
+    Indirect Proxies:
+        SimplePrinter(identity)
+        SimplePrinter@PrinterAdapter
+
+
+    synchronous method invocation
+    asynchronous method invocation
+
+
+    slice 
+        定义客户端和服务端的接口，操作和数据类型
+
+
+    包安装
+        cd /etc/yum.repos.d
+        sudo wget https://zeroc.com/download/Ice/3.7/el7/zeroc-ice3.7.repo
+        sudo yum install ice-all-runtime ice-all-devel
+
+
+    手动编译
+        cd local-install
+        unzip ice-3.7.1.zip
+        cd ice-3.7.1/cpp
+        make V=1 -j8 srcs
+        make install
+
+        git 下载源码
+            git clone -b 3.7 https://github.com/zeroc-ice/ice.git
+        
+        依赖安装
+            yum install lmdb-devel
+            yum install mcpp-devel
+            yum install gcc-c++ 
+            yum install libdb-cxx-devel
+            yum install openssl-devel
+            yum install bzip2-devel
+            yum install expat-devel
+        
+        编译 cpp
+            cd ice/cpp
+
+            # 编译，时间比较久，有报错可能需要安装对应依赖
+            make V=1 -j8 srcs
+
+            # 安装  会自动生成文件夹 /opt/Ice-3.7.2
+            make install
+
+            ll /opt/Ice-3.7.2/bin
+            export PATH=/opt/Ice-3.7.2/bin:$PATH
+
+            # /etc/ld.so.conf.d/ 下面复制一个配置文件
+            cp /etc/ld.so.conf.d/mariadb-x86_64.conf /etc/ld.so.conf.d/ice_64.conf
+
+            echo /opt/Ice-3.7.2/lib64 > /etc/ld.so.conf.d/ice_64.conf
+
+            # 刷新 ld 的配置
+            ldconfig
+
+        编译 php 扩展
+            cd ../php
+            make && make install
+
+            cp /opt/Ice-3.7.2/php/ice.so /usr/lib64/php/modules/ice.so
+
+            # 如果 ini 文件没有就生成一下
+            echo extension=ice.so > /etc/php.d/ice.ini
+
+            # 查看模块安装情况
+            php -m
+
+            # 重启 php-fpm
+            systemctl restart php-fpm
